@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+
+<VBox xmlns="http://javafx.com/javafx/8.0.171"
+    xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tgrah.MainController" spacing="20" alignment="TOP_LEFT">
+
+    <SplitPane dividerPositions="0.2">
+        <items>
+
+            <VBox>
+                <VBox alignment="TOP_LEFT"
+                    xmlns="http://javafx.com/javafx/8.0.171"
+                    xmlns:fx="http://javafx.com/fxml/1">
+
+                    <Button text="Neuer Eintrag" onAction="#showNewEntryView"/>
+                    <ListView fx:id="totpListView" prefHeight="400" prefWidth="250"/>
+                </VBox>
+
+            </VBox>
+
+            <VBox>
+                <HBox xmlns="http://javafx.com/javafx/8.0.171" fx:id="newEntryView"
+                    xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER">
+
+                    <VBox spacing="10">
+                        <Label text="Neuer Eintrag" />
+                        <TextField fx:id="nameField" promptText="Name"/>
+                        <TextField fx:id="secretField" promptText="Secret"/>
+                        <Button text="Add" onAction="#saveNewSecret"/>
+                    </VBox>
+                </HBox>
+                <HBox fx:id="codeView" alignment="CENTER"
+                    xmlns="http://javafx.com/javafx/8.0.171">
+                    <VBox spacing="10">
+                        <Label fx:id="selectedTotp"/>
+                        <Button text="Delete" onAction="#deleteSecret"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+
+        </items>
+    </SplitPane>
+
+</VBox>
