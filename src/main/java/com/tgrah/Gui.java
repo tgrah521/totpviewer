@@ -21,6 +21,10 @@ public class Gui extends Application {
 
         scene = new Scene(mainRoot, 480, 240);
 
+            scene.getStylesheets().add(
+        getClass().getResource("styles.css").toExternalForm()
+    );
+
         stage.setTitle("TOTP-Viewer");
         stage.setScene(scene);
         stage.show();
