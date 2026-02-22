@@ -3,7 +3,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
@@ -11,43 +10,70 @@
 <?import javafx.scene.control.Label?>
 
 <VBox xmlns="http://javafx.com/javafx/8.0.171"
-    xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tgrah.MainController" spacing="20" alignment="TOP_LEFT">
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.tgrah.MainController"
+      spacing="0"
+      alignment="TOP_LEFT"
+      styleClass="root-container">
 
-    <SplitPane dividerPositions="0.2">
+    <SplitPane dividerPositions="0.25" fx:id="splitPane">
+
         <items>
 
-            <VBox>
-                <VBox alignment="TOP_LEFT"
-                    xmlns="http://javafx.com/javafx/8.0.171"
-                    xmlns:fx="http://javafx.com/fxml/1">
+            <!-- Sidebar -->
+            <VBox  styleClass="sidebar">
 
-                    <Button text="Neuer Eintrag" onAction="#showNewEntryView"/>
-                    <ListView fx:id="totpListView" prefHeight="400" prefWidth="250"/>
+
+                <Button text="Neuer Eintrag"
+                        onAction="#showNewEntryView"
+                        styleClass="primary-button"/>
+
+                <ListView fx:id="totpListView"
+
+                          styleClass="totp-list"/>
+            </VBox>
+
+            <!-- Content Area -->
+            <StackPane styleClass="content-area">
+
+                <!-- New Entry View -->
+                <VBox fx:id="newEntryView"
+                      spacing="15"
+                      alignment="CENTER"
+                      styleClass="card">
+
+                    <Label text="Neuer Eintrag"
+                           styleClass="card-title"/>
+
+                    <TextField fx:id="nameField"
+                               promptText="Name"
+                               styleClass="input-field"/>
+
+                    <TextField fx:id="secretField"
+                               promptText="Secret"
+                               styleClass="input-field"/>
+
+                    <Button text="Speichern"
+                            onAction="#saveNewSecret"
+                            styleClass="primary-button"/>
                 </VBox>
 
-            </VBox>
+                <!-- Code View -->
+                <VBox fx:id="codeView"
+                      spacing="20"
+                      alignment="CENTER"
+                      styleClass="card">
 
-            <VBox>
-                <HBox xmlns="http://javafx.com/javafx/8.0.171" fx:id="newEntryView"
-                    xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER">
+                    <Label fx:id="selectedTotp"
+                           styleClass="totp-code"/>
 
-                    <VBox spacing="10">
-                        <Label text="Neuer Eintrag" />
-                        <TextField fx:id="nameField" promptText="Name"/>
-                        <TextField fx:id="secretField" promptText="Secret"/>
-                        <Button text="Add" onAction="#saveNewSecret"/>
-                    </VBox>
-                </HBox>
-                <HBox fx:id="codeView" alignment="CENTER"
-                    xmlns="http://javafx.com/javafx/8.0.171">
-                    <VBox spacing="10">
-                        <Label fx:id="selectedTotp"/>
-                        <Button text="Delete" onAction="#deleteSecret"/>
-                    </VBox>
-                </HBox>
-            </VBox>
+                    <Button text="Löschen"
+                            onAction="#deleteSecret"
+                            styleClass="danger-button"/>
+                </VBox>
+
+            </StackPane>
 
         </items>
     </SplitPane>
-
 </VBox>

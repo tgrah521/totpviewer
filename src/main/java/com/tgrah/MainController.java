@@ -13,8 +13,10 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -32,14 +34,17 @@ public class MainController {
     @FXML
     private Label selectedTotp;
 
-    @FXML
-    private HBox newEntryView;
+@FXML
+private VBox newEntryView;
 
     @FXML
-    private HBox codeView;
+    private VBox codeView;
 
     @FXML
     private ListView<ListEntry> totpListView;
+
+    @FXML
+    private SplitPane splitPane;
 
     private Timeline totpTimeline;
 
@@ -51,6 +56,12 @@ public class MainController {
     public void initialize() {
 
         loadTotpList();
+        if(splitPane != null) {
+            splitPane.setDividerPositions(0.2);
+            splitPane.getDividers().get(0).positionProperty().addListener((obs, oldVal, newVal) -> {
+            splitPane.getDividers().get(0).setPosition(0.2);
+        });
+        }
         if (codeView != null) {
             codeView.setVisible(false);
             codeView.setManaged(false);
