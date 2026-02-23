@@ -35,7 +35,7 @@ public class TotpGenerator {
 
     private static byte[] base32Decode(String secret) {
         Base32 base32 = new Base32();
-        return base32.encode(secret.getBytes());
+        return base32.decode(secret.getBytes());
     }
 
     private static byte[] hash(byte[] key, byte[] msg) {
