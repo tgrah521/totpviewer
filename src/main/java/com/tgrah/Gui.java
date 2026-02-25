@@ -19,13 +19,13 @@ public class Gui extends Application {
         FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("main.fxml"));
         Parent mainRoot = mainLoader.load();
 
-        scene = new Scene(mainRoot, 480, 240);
+        scene = new Scene(mainRoot, 640, 240);
 
-            scene.getStylesheets().add(
-        getClass().getResource("styles.css").toExternalForm()
-    );
+        scene.getStylesheets().add(
+                getClass().getResource("styles.css").toExternalForm());
 
         stage.setTitle("TOTP-Viewer");
+        stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
 

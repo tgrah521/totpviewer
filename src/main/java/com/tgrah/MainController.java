@@ -5,23 +5,38 @@ import com.google.gson.reflect.TypeToken;
 import com.tgrah.model.ListEntry;
 import com.tgrah.util.TotpGenerator;
 
+import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
+import javafx.scene.input.Clipboard;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+
+import javafx.scene.input.ClipboardContent;
 
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
+
+import javafx.animation.FadeTransition;
+import javafx.animation.PauseTransition;
+import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
+import javafx.util.Duration;
 
 public class MainController {
 
@@ -34,8 +49,8 @@ public class MainController {
     @FXML
     private Label selectedTotp;
 
-@FXML
-private VBox newEntryView;
+    @FXML
+    private VBox newEntryView;
 
     @FXML
     private VBox codeView;
@@ -46,7 +61,13 @@ private VBox newEntryView;
     @FXML
     private SplitPane splitPane;
 
+    @FXML
+    private Label banner;
+
     private Timeline totpTimeline;
+
+    @FXML
+    private StackPane contentArea;
 
     private ObservableList<ListEntry> observableList = FXCollections.observableArrayList();
     private final Gson gson = new Gson();
@@ -56,15 +77,18 @@ private VBox newEntryView;
     public void initialize() {
 
         loadTotpList();
-        if(splitPane != null) {
+        if (splitPane != null) {
             splitPane.setDividerPositions(0.2);
             splitPane.getDividers().get(0).positionProperty().addListener((obs, oldVal, newVal) -> {
-            splitPane.getDividers().get(0).setPosition(0.2);
-        });
+                splitPane.getDividers().get(0).setPosition(0.2);
+            });
         }
         if (codeView != null) {
             codeView.setVisible(false);
             codeView.setManaged(false);
+        }
+        if (banner != null) {
+            banner.setOpacity(0);
         }
         if (totpListView != null) {
 
@@ -123,6 +147,14 @@ private VBox newEntryView;
                 } catch (Exception ignored) {
                 }
 
+                if (entries.stream().anyMatch(e -> e.getName().equals(name))) {
+                    Alert alert = new Alert(AlertType.INFORMATION, "Ein Eintrag mit dem Namen existiert bereits");
+                    alert.setTitle("Fehler");
+                    alert.setHeaderText(null);
+                    alert.setGraphic(null);
+                    alert.show();
+                    return;
+                }
                 ListEntry newEntry = new ListEntry(name, secret, totp);
                 entries.add(newEntry);
 
@@ -134,7 +166,6 @@ private VBox newEntryView;
 
                 nameField.clear();
                 secretField.clear();
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -193,6 +224,7 @@ private VBox newEntryView;
             try {
                 String newTotp = TotpGenerator.generateTotp(selected.getSecret());
                 selectedTotp.setText(newTotp);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -209,5 +241,42 @@ private VBox newEntryView;
 
             totpListView.getSelectionModel().clearSelection();
         }
+    }
+
+    @FXML
+    public void copyToClipboard() {
+        Clipboard clipboard = Clipboard.getSystemClipboard();
+        ClipboardContent content = new ClipboardContent();
+        content.putString(selectedTotp.getText());
+        clipboard.setContent(content);
+
+        showCopyBanner();
+    }
+
+    private void showCopyBanner() {
+
+        banner.setText("Code erfolgreich kopiert");
+
+        banner.setOpacity(0);
+
+        StackPane.setAlignment(banner, Pos.TOP_CENTER);
+        StackPane.setMargin(banner, new Insets(20));
+
+        FadeTransition fadeIn = new FadeTransition(Duration.millis(200), banner);
+        fadeIn.setFromValue(0);
+        fadeIn.setToValue(1);
+
+        PauseTransition stay = new PauseTransition(Duration.seconds(1.5));
+
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(200), banner);
+        fadeOut.setFromValue(1);
+        fadeOut.setToValue(0);
+
+        fadeOut.setOnFinished(e -> contentArea.getChildren().remove(banner));
+
+        fadeIn.setOnFinished(e -> stay.play());
+        stay.setOnFinished(e -> fadeOut.play());
+
+        fadeIn.play();
     }
 }

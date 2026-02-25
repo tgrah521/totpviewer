@@ -10,66 +10,74 @@
 <?import javafx.scene.control.Label?>
 
 <VBox xmlns="http://javafx.com/javafx/8.0.171"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.tgrah.MainController"
-      spacing="0"
-      alignment="TOP_LEFT"
-      styleClass="root-container">
+    xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="com.tgrah.MainController"
+    spacing="0"
+    alignment="TOP_LEFT"
+    styleClass="root-container">
 
     <SplitPane dividerPositions="0.25" fx:id="splitPane">
 
         <items>
 
             <!-- Sidebar -->
-            <VBox  styleClass="sidebar">
+            <VBox                     alignment="CENTER" styleClass="sidebar">
 
 
                 <Button text="Neuer Eintrag"
-                        onAction="#showNewEntryView"
-                        styleClass="primary-button"/>
+                    onAction="#showNewEntryView"
+                    styleClass="primary-button" />
 
                 <ListView fx:id="totpListView"
-
-                          styleClass="totp-list"/>
+                    styleClass="totp-list" />
             </VBox>
 
             <!-- Content Area -->
-            <StackPane styleClass="content-area">
+            <StackPane fx:id="contentArea" styleClass="content-area">
 
                 <!-- New Entry View -->
                 <VBox fx:id="newEntryView"
-                      spacing="15"
-                      alignment="CENTER"
-                      styleClass="card">
+                    spacing="15"
+                    alignment="CENTER"
+                    styleClass="card">
 
                     <Label text="Neuer Eintrag"
-                           styleClass="card-title"/>
+                        styleClass="card-title" />
 
                     <TextField fx:id="nameField"
-                               promptText="Name"
-                               styleClass="input-field"/>
+                        promptText="Name"
+                        styleClass="input-field" />
 
                     <TextField fx:id="secretField"
-                               promptText="Secret"
-                               styleClass="input-field"/>
+                        promptText="Secret"
+                        styleClass="input-field" />
 
                     <Button text="Speichern"
-                            onAction="#saveNewSecret"
-                            styleClass="primary-button"/>
+                        onAction="#saveNewSecret"
+                        styleClass="primary-button" />
                 </VBox>
 
                 <!-- Code View -->
                 <VBox fx:id="codeView"
-                      spacing="20"
-                      alignment="CENTER"
-                      styleClass="card">
+                    spacing="20"
+                    alignment="CENTER"
+                    styleClass="card">
 
                     <Label fx:id="selectedTotp"
-                           styleClass="totp-code"/>
+                        styleClass="totp-code" />
 
-                    <Button text="Löschen"
+                    <HBox spacing="10" alignment="CENTER">
+                        <Button text="Löschen"
                             onAction="#deleteSecret"
-                            styleClass="danger-button"/>
+                            styleClass="delete-button" />
+
+                        <Button text="Kopieren"
+                            onAction="#copyToClipboard"
+                            styleClass="danger-button" />
+                    </HBox>
+
+                    <Label fx:id="banner"
+                        styleClass="banner" />
                 </VBox>
 
             </StackPane>
